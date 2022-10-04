@@ -4,6 +4,14 @@ Simply put, the official Knative quickstart tutorial has quite a few gaps explai
 
 This example deploys two services (```cloudevents-player``` and our custom app ```kn-app```) with two triggers. If you send an CloudEvent with type ```my-event``` from ```cloudevents-player```, ```kn-app``` will reply an CloudEvent with type ```app-event``` which will in turn be sent back to ```cloudevents-player```.
 
+The app is written in Golang using CloudEvents SDK. Both incoming and outputing events has a JSON payload with a single ```message``` field:
+
+```json
+{
+  "message": "something"
+}
+```
+
 ## Run This Example
 
 ### Create Knative Quickstart Environment
@@ -51,5 +59,4 @@ Open the URL of CloudEvents player (for example, ```http://cloudevents-player.de
 
 In ```kn-app.yaml``` the ```my-app``` has a environment variable ```K_SINK```, which will tell the code where is the event target. Here we set it with the URL of example-broker, which is the built-in broker in the Knative quickstart environment.
 
-If ```K_SINK``` is not set (target is empty) and you send an direct [CloudEvent-compatible HTTP request](https://cloud.google.com/eventarc/docs/cloudevents) to the app, the code will reply an event directly as a HTTP response.
-
+If ```K_SINK``` is not set (target is empty) and you send an direct [CloudEvent-compatible HTTP request](https://cloud.google.com/eventarc/docs/cloudevents) to the app, the code will reply an event directly as a HTTP response. This also works if you run the app as a local Docker container.
