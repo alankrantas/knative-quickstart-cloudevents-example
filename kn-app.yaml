@@ -1,0 +1,72 @@
+# kn quickstart kind
+# ---
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: my-app
+  namespace: default
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/class: "kpa.autoscaling.knative.dev"
+    spec:
+      containers:
+        - image: <your docker hub name>/kn-app:latest
+          ports:
+            - containerPort: 8080
+          env:
+          - name: K_SINK
+            value: "http://broker-ingress.knative-eventing.svc.cluster.local/default/example-broker"
+---
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: cloudevents-player
+  namespace: default
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/min-scale: "1"
+    spec:
+      containers:
+        - image: ruromero/cloudevents-player:latest
+          env:
+            - name: BROKER_URL
+              value: http://broker-ingress.knative-eventing.svc.cluster.local/default/example-broker
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: my-app-trigger
+  namespace: default
+  annotations:
+    knative-eventing-injection: enabled
+spec:
+  broker: example-broker
+  filter:
+    attributes:
+      type: my-event
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: my-app
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: my-reply-trigger
+  annotations:
+    knative-eventing-injection: enabled
+spec:
+  broker: example-broker
+  filter:
+    attributes:
+      type: app-event
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: cloudevents-player
