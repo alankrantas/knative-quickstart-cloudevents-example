@@ -61,8 +61,12 @@ Open the URL of CloudEvents player (for example, ```http://cloudevents-player.de
 
 The event with ID ```42``` is the one replied by the app. You can modify the eveent ID, source and message in the code.
 
-### ```K_SINK``` vs. Directly Reply
+### ```K_SINK``` vs. Direct Reply
 
-In ```kn-app.yaml``` the ```my-app``` has a environment variable ```K_SINK```, which will tell the code where is the event target. Here we set it with the URL of example-broker, which is the built-in broker in the Knative quickstart environment.
+In ```kn-app.yaml``` the ```my-app``` has a environment variable ```K_SINK```, which will tell the code where is the event target. Here we set it with the URL of example-broker, which is the built-in broker in the Knative quickstart environment:
+
+```
+http://broker-ingress.knative-eventing.svc.cluster.local/default/example-broker
+```
 
 If ```K_SINK``` is not set (target is empty) and you send an direct [CloudEvent-compatible HTTP request](https://cloud.google.com/eventarc/docs/cloudevents) to the app, the code will reply an event directly as a HTTP response. This also works if you run the app as a local Docker container.
