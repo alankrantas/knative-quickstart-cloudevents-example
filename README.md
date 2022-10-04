@@ -55,6 +55,10 @@ kubectl apply -f kn-app.yaml
 
 Open the URL of CloudEvents player (for example, ```http://cloudevents-player.default.127.0.0.1.sslip.io```) and send an event with type ```my-event```. The message is a JSON object with one field ```message```. You should see a second event with type ```app-event``` appear shortly.
 
+<img width="958" src="https://user-images.githubusercontent.com/44191076/193742070-01103e74-f0f3-4b20-b16e-c711dbdf080d.png">
+
+The event with ID ```42``` is the one replied by the app. You can modify the eveent ID, source and message in the code.
+
 ### ```K_SINK``` vs. Directly Reply
 
 In ```kn-app.yaml``` the ```my-app``` has a environment variable ```K_SINK```, which will tell the code where is the event target. Here we set it with the URL of example-broker, which is the built-in broker in the Knative quickstart environment.
