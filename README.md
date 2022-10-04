@@ -4,7 +4,9 @@ Simply put, the official Knative quickstart tutorial has quite a few gaps explai
 
 This example deploys two services (```cloudevents-player``` and our custom app ```kn-app```) with two triggers. If you send an CloudEvent with type ```my-event``` from ```cloudevents-player```, ```kn-app``` will reply an CloudEvent with type ```app-event``` which will in turn be sent back to ```cloudevents-player```.
 
-The app is written in Golang using CloudEvents SDK. Both incoming and outputing events has a JSON payload with a single ```message``` field:
+![drawio](https://user-images.githubusercontent.com/44191076/193742467-3f6af810-c47d-4360-93c7-eae01391a4b9.png)
+
+The app is written in Golang using CloudEvents SDK, modified from the [second official serving example](https://github.com/knative/docs/tree/main/code-samples/serving/cloudevents/cloudevents-go). Both incoming and outputing events has a JSON payload with a single ```message``` field:
 
 ```json
 {
